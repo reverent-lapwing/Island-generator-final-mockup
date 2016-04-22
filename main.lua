@@ -77,18 +77,18 @@ end
 function branch1( basin_level, l, r, n, rn )
  for _,v in pairs(nodes) do
   local x = (Func(v.x, l[1], n[1]) 
-										+ Func((-v.x + sqr_3*v.y + S)/2, l[2], n[2]) 
+          + Func((-v.x + sqr_3*v.y + S)/2, l[2], n[2]) 
           + Func((-v.x - sqr_3*v.y + 3*S)/2, l[3], n[3])
-		        + Func(v.y, l[4], n[4])
+          + Func(v.y, l[4], n[4])
           + Func((-v.y + sqr_3*v.x + S)/2, l[5], n[5])
           + Func((-v.y - sqr_3*v.x + 3*S)/2, l[6], n[6]))/6
   
   local y = (math.abs(Func(v.x, r[1], rn[1])) 
-											+ math.abs(Func((-v.x + sqr_3*v.y + S)/2, r[2], rn[2])) 
-											+ math.abs(Func((-v.x - sqr_3*v.y + 3*S)/2, r[3], rn[3]))
-											+ math.abs(Func(v.y, r[4], rn[4]))
-											+ math.abs(Func((-v.y + sqr_3*v.x + S)/2, r[5], rn[5]))
-											+ math.abs(Func((-v.y - sqr_3*v.x + 3*S)/2, r[6], rn[6])))/6
+           + math.abs(Func((-v.x + sqr_3*v.y + S)/2, r[2], rn[2])) 
+           + math.abs(Func((-v.x - sqr_3*v.y + 3*S)/2, r[3], rn[3]))
+           + math.abs(Func(v.y, r[4], rn[4]))
+           + math.abs(Func((-v.y + sqr_3*v.x + S)/2, r[5], rn[5]))
+           + math.abs(Func((-v.y - sqr_3*v.x + 3*S)/2, r[6], rn[6])))/6
   
   v.z = -basin_level +1 -((-x+1)^(y+1))
  end
@@ -100,13 +100,13 @@ function branch2( basin_level, l, r, n, rn)
       +(Func(v.x, l[1], n[1]) 
       + Func((-v.x + sqr_3*v.y + S)/2, l[2], n[2]) 
       + Func((-v.x - sqr_3*v.y + 3*S)/2, l[3], n[3])
-		    + Func(v.y, l[4], n[4])
+      + Func(v.y, l[4], n[4])
       + Func((-v.y + sqr_3*v.x + S)/2, l[5], n[5])
       + Func((-v.y - sqr_3*v.x + 3*S)/2, l[6], n[6])
       + Func(v.x, r[1], rn[1])
       + Func((-v.x + sqr_3*v.y + S)/2, r[2], rn[2])
       + Func((-v.x - sqr_3*v.y + 3*S)/2, r[3], rn[3])
-		    + Func(v.y, r[4], rn[4])
+      + Func(v.y, r[4], rn[4])
       + Func((-v.y + sqr_3*v.x + S)/2, r[5], rn[5])
       + Func((-v.y - sqr_3*v.x + 3*S)/2, r[6], rn[6]))/(12-basin_level)
  end
