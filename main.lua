@@ -12,7 +12,6 @@ function love.load()
  
  while x <= 2*S do 
   local magic_number = 64
-    
   for j = 1, i do
    table.insert(nodes, { x = x, y = y*(1 - (i/magic_number) + (j-1)*(2/magic_number)), z = 0 })
   end 
@@ -112,6 +111,42 @@ function branch2( basin_level, l, r, n, rn)
  end
 end
 
+function branch3( basin_level, l, r, n, rn )
+ for _,v in pairs(nodes) do
+  local x1 = -v.x + S
+  local y1 = -v.y + (2*S)/sqr_3
+ 
+  local x =(Func(v.x, l[1], n[1]) 
+          + Func((-v.x + sqr_3*v.y + S)/2, l[2], n[2]) 
+          + Func((-v.x - sqr_3*v.y + 3*S)/2, l[3], n[3])
+          + Func(x1, l[4], n[4])
+          + Func((-x1 + sqr_3*y1 + S)/2, l[5], n[5])
+          + Func((-x1 - sqr_3*y1 + 3*S)/2, l[6], n[6])
+										+ Func(v.y,   l[7],  n[7])
+          + Func((-v.y + sqr_3*v.x + S)/2,   l[8],  n[8])
+          + Func((-v.y - sqr_3*v.x + 3*S)/2,   l[9],  n[9])
+          + Func(y1,   l[10],  n[10])
+          + Func((-y1 + sqr_3*x1 + S)/2,   l[11],  n[11])
+          + Func((-y1 - sqr_3*x1 + 3*S)/2,  l[12],  n[12]))/12
+  
+  local y = (math.abs(Func(v.y, r[1], rn[1])) 
+           + math.abs(Func((-v.x + sqr_3*v.y + S)/2, r[2], rn[2])) 
+           + math.abs(Func((-v.x - sqr_3*v.y + 3*S)/2, r[3], rn[3]))
+           + math.abs(Func(x1, r[4], rn[4]))
+           + math.abs(Func((-x1 + sqr_3*y1 + S)/2, r[5], rn[5]))
+           + math.abs(Func((-x1 - sqr_3*y1 + 3*S)/2, r[6], rn[6]))
+           + math.abs(Func(v.y, r[7], rn[7])) 
+           + math.abs(Func((-v.y + sqr_3*v.x + S)/2, r[8], rn[8])) 
+           + math.abs(Func((-v.y - sqr_3*v.x + 3*S)/2, r[9], rn[9]))
+           + math.abs(Func(y1, r[10], rn[10]))
+           + math.abs(Func((-y1 + sqr_3*x1 + S)/2, r[11], rn[11]))
+           + math.abs(Func((-y1 - sqr_3*x1 + 3*S)/2, r[12], rn[12])))/12
+  
+  v.z = -basin_level +1 -((-x+1)^(y+1))
+  --v.z = -basin_level + x
+ end
+end
+
 function island()
  local basin_level = (math.random(0, 200000)/1000000)+0.1
 
@@ -120,12 +155,12 @@ function island()
  local n = {}
  local rn= {}
  
- for i = 1, 6 do
+ for i = 1, 12 do
   l[i], n[i] = SetFunc(10, 10, 5)
   r[i],rn[i] = SetFunc(100, 100, 50)
  end
  
- branch1(basin_level,l,r,n,rn)
+ branch3(basin_level,l,r,n,rn)
 
 end
 
@@ -134,12 +169,12 @@ function DrawAll()
  local index = 0
 
  for _,v in pairs(nodes) do
-  if v.z < -1 then goto skip end
+--  if v.z < -1 then goto skip end
 
   if v.z > 0 then
    love.graphics.setColor(0xff*(v.z),0xff*(1-v.z),0x60,0xff)
   else
-   love.graphics.setColor(0x5e*(1+v.z),0xa0*(1+v.z),0xff*(1+v.z),0xff)
+   love.graphics.setColor(0x5e*(1/(-v.z+1)),0xa0*(1/(-v.z+1)),0xff*(1/(-v.z+1)),0xff)
   end   
  
    love.graphics.circle("fill", 
@@ -177,6 +212,22 @@ end
 
 function love.draw()
  index = DrawAll()
+ 
+ love.graphics.setColor(0xff, 0xff, 0xff, 0xff)
+ 
+-- love.graphics.line(2*S*scale_y, sqr_3*S*scale_x, 2*S*scale_y, (1+sqr_3)*S*scale_x)
+-- love.graphics.line(2*S*scale_y, sqr_3*S*scale_x, 3*S*scale_y, sqr_3*S*scale_x)
+ 
+--[[ 
+ love.graphics.polygon("line", 
+  ((1/sqr_3)+sqr_3)*S*scale_x, 2*S*scale_y, 
+  sqr_3*S*scale_x, 3*S*scale_y, 
+  ((2/sqr_3)+sqr_3)*S*scale_x, 3*S*scale_y )
+ love.graphics.polygon("line", 
+  ((1/sqr_3)+sqr_3)*S*scale_x, 3*S*scale_y, 
+  sqr_3*S*scale_x, 2*S*scale_y, 
+  ((2/sqr_3)+sqr_3)*S*scale_x, 2*S*scale_y )
+ ]]
  
  love.graphics.setColor(0xff,0xff,0xff)
  love.graphics.print(love.timer.getDelta().."\ncircles drawn: "..index)
