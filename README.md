@@ -48,13 +48,9 @@ And this is the whole algorythm. It later iterates over every key in the map and
 ####SIDE NOTES
 
 -This algorythm can be treated as a hashing function combined with function iterating over a specified set of keys, so it might make sense to split it into two modules. Hovewer since hashing is very resource heavy, it should be done only once and stored in a container for later reference. In other words, it shouldn`t be used anywhere other than when filling map and best be hidden in implementation. Nevertheless having separate, non-public hashing function is in complience with DRY principle, if there were a need to reuse this hashing algorythm in the future. It makes the code easier to maintain.
-
 -You may be wondering "why are there so many triangles in my program"? The reason is that regions are implemented as triangles and regions are implemented as triangles because triangle is the only figure that can be always rendered without triangulation or tranformed into a plane function. The flexibility it provides is a huge benefit I`m glad to trade for any disadvantages (not that many) of using triangles and all advantages of using squares.
-
 -Knowing the formula shown in last example allows to easily base the algorythm on a triangle that is fliped or rotated at right angle relative to the one used by slightly modyfing the variables. That is the reason why I use 12 functions instead of 3 - it`s just simple to do and experiment with.
-
 -By trial and error I found that for profiling functions most suitable is configuration (10, 10, 20). It always yelds an island-like shape, there is not too much low ground, which would be flooded later in the algorythm, it always have interesting features in form of mountains, cliffs, valleys etc. and is relatively evenly spread out. Using big number of semisuperelipses creates very steep slope at the edge and little variation at the top and using too big maximum makes the shape looks like a one big blob, so I think it`s a good balance.
-
 -Worth noting is the formula I used to make generated island less monotonic. As I mentioned earlier I use 4 islands as a base and 4 islands as an overlay. Base use configuration described above, overlay use configuration (100, 1, 2), which creates profiling function in a shape of dense spikes. What I needed was a function
 ```
 f(a,b) -> c
