@@ -52,7 +52,7 @@ And this is the whole algorythm. It later iterates over every key in the map and
 *	Knowing the formula shown in last example allows to easily base the algorythm on a triangle that is fliped or rotated at right angle relative to the one used by slightly modyfing the variables. That is the reason why I use 12 functions instead of 3 - it`s just simple to do and experiment with.
 *	By trial and error I found that for profiling functions most suitable is configuration (10, 10, 20). It always yelds an island-like shape, there is not too much low ground, which would be flooded later in the algorythm, it always have interesting features in form of mountains, cliffs, valleys etc. and is relatively evenly spread out. Using big number of semisuperelipses creates very steep slope at the edge and little variation at the top and using too big maximum makes the shape looks like a one big blob, so I think it`s a good balance.
 *	Worth noting is the formula I used to make generated island less monotonic. As I mentioned earlier I use 4 islands as a base and 4 islands as an overlay. Base use configuration described above, overlay use configuration (100, 1, 2), which creates profiling function in a shape of dense spikes. What I needed was a function
-```
+	```
 f(a,b) -> c
 
 a,b,c belongs to [0,1]
