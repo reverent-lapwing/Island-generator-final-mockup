@@ -17,7 +17,7 @@ As an input it takes map filled with coordinates as keys and returns map with a 
 
 Profile functions are the functions from mathematical model overlaying altidutes of base triangle. I call them "profile functions", because if you look at the generated island from a certain angle, it should have the same shape as this function. At least it would, if the algorythm was based on square, with triangle it works a little different for a few reasons.
 
-Profile function is a sum of halves of superelipses and base function 
+Profile function is a sum of halves of [superelipses](https://en.wikipedia.org/wiki/Superellipse) and base function 
 ```
 base(x|x<0)       =  a*(2*x/S-1)+a
 base(x|x>0 & x<S) =  0
@@ -51,7 +51,7 @@ And this is the whole algorythm. It later iterates over every key in the map and
 *	You may be wondering "why are there so many triangles in my program"? The reason is that regions are implemented as triangles and regions are implemented as triangles because triangle is the only figure that can be always rendered without triangulation or tranformed into a plane function. The flexibility it provides is a huge benefit I`m glad to trade for any disadvantages (not that many) of using triangles and all advantages of using squares.
 *	Knowing the formula shown in last example allows to easily base the algorythm on a triangle that is fliped or rotated at right angle relative to the one used by slightly modyfing the variables. That is the reason why I use 12 functions instead of 3 - it`s just simple to do and experiment with.
 *	By trial and error I found that for profiling functions most suitable is configuration (10, 10, 20). It always yelds an island-like shape, there is not too much low ground, which would be flooded later in the algorythm, it always have interesting features in form of mountains, cliffs, valleys etc. and is relatively evenly spread out. Using big number of semisuperelipses creates very steep slope at the edge and little variation at the top and using too big maximum makes the shape looks like a one big blob, so I think it`s a good balance.
-*Worth noting is the formula I used to make generated island less monotonic. As I mentioned earlier I use 4 islands as a base and 4 islands as an overlay. Base use configuration described above, overlay use configuration (100, 1, 2), which creates profiling function in a shape of dense spikes. What I needed was a function
+*	Worth noting is the formula I used to make generated island less monotonic. As I mentioned earlier I use 4 islands as a base and 4 islands as an overlay. Base use configuration described above, overlay use configuration (100, 1, 2), which creates profiling function in a shape of dense spikes. What I needed was a function
 ```
 f(a,b) -> c
 
@@ -62,4 +62,4 @@ f(a,b) > a & f(a,b) < 1 where a,b belongs to (0,1)
 f(a_0,b) < f(a_1,b) where a_0 < a_1
 f(a,b_0) < f(a,b_1) where b_0 < b_1, a belongs to (0,1)
 ```
-The formula I came up with was `1-((-base+1)^(overlay+1))`. Searching in Google for `f(x)=1-((-x+1)^(overlay+1))` and substituting overlay for a value between 0 and 1 shows how elegant the solution is.
+	The formula I came up with was `1-((-base+1)^(overlay+1))`. Searching in Google for `f(x)=1-((-x+1)^(overlay+1))` and substituting overlay for a value between 0 and 1 shows how elegant the solution is.
